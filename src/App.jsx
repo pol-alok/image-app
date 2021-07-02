@@ -13,7 +13,7 @@ const App = () => {
         <Route path='/new' component={NewImage} />
         <Route path='/not-found' component={NotFound} />
         <Route path='/' exact component={Home} />
-        <Redirect to='not-found' />
+        <Redirect to='/not-found' />
       </Switch>
     </>
   );

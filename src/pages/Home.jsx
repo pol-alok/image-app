@@ -41,7 +41,7 @@ const Home = () => {
       false,
     );
     axios
-      .get('https://image-app-backend.herokuapp.com/')
+      .get('https://img-app-api.herokuapp.com/')
       .then((res) => {
         setLoading(false);
         setImages(res.data.data);

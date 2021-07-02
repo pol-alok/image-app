@@ -27,7 +27,7 @@ const ImageDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://image-app-backend.herokuapp.com/show/${id}`)
+      .get(`https://img-app-api.herokuapp.com/show/${id}`)
       .then((res) => {
         setLoading(false);
         setImage(res.data.data);

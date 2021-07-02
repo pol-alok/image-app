@@ -71,7 +71,7 @@ const ImageForm = () => {
     setErrors(err);
     if (err && Object.keys(err).length === 0 && err.constructor === Object) {
       setLoading(true);
-      axios.post('https://image-app-backend.herokuapp.com/new', image).then(
+      axios.post('https://img-app-api.herokuapp.com/new', image).then(
         (response) => {
           setLoading(false);
           e.target.reset();
