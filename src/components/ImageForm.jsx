@@ -15,9 +15,10 @@ import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   card: {
     backgroundColor: '#cfe8fc',
-    height: '95vh',
+    height: '100%',
     '& > *': {
       margin: theme.spacing(1),
+      padding: theme.spacing(2),
     },
   },
   form: {
