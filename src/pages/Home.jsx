@@ -1,39 +1,10 @@
-import { Container } from '@material-ui/core';
-import React from 'react';
+import { Container, CircularProgress } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ImageCard from '../components/ImageCard';
 import NavBar from '../components/NavBar';
+import axios from 'axios';
 
-const images = [
-  {
-    id: 1,
-    name: 'Contemplative Reptile',
-    description: `Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica`,
-    url: 'https://i.pravatar.cc/300?img=1',
-  },
-  {
-    id: 2,
-    name: 'Contemplative Reptile',
-    description: `Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica`,
-    url: 'https://i.pravatar.cc/300?img=2',
-  },
-  {
-    id: 3,
-    name: 'Contemplative Reptile',
-    description: `Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica`,
-    url: 'https://i.pravatar.cc/300?img=3',
-  },
-  {
-    id: 4,
-    name: 'Contemplative Reptile',
-    description: `Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica`,
-    url: 'https://i.pravatar.cc/300?img=4',
-  },
-];
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -43,17 +14,45 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(50),
     },
   },
+  loadingContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > *': {
+      margin: theme.spacing(3),
+      width: theme.spacing(50),
+    },
+  },
 }));
 const Home = () => {
   const classes = useStyles();
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get('https://image-app-backend.herokuapp.com/')
+      .then((res) => {
+        setLoading(false);
+        setImages(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
       <NavBar showAddButton={true} />
-      <Container maxWidth='lg' className={classes.container}>
-        {images.map((img) => (
-          <ImageCard key={img.id} img={img} />
-        ))}
+      <Container
+        maxWidth='lg'
+        className={loading ? classes.loadingContainer : classes.container}>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          images.map((img) => <ImageCard key={img.id} img={img} />)
+        )}
       </Container>
     </>
   );

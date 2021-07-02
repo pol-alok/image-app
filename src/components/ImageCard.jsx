@@ -30,7 +30,7 @@ const ImageCard = ({ img }) => {
             {img.name}
           </Typography>
           <Typography variant='body2' color='textSecondary' component='p'>
-            {img.description}
+            {img.details.substring(0, 130)}...
           </Typography>
         </CardContent>
       </CardActionArea>

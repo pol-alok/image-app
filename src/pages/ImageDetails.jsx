@@ -1,9 +1,10 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, CircularProgress } from '@material-ui/core';
 import { Container } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import SingleImage from '../components/SingleImage';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,22 +22,26 @@ const useStyles = makeStyles((theme) => ({
 const ImageDetails = () => {
   const classes = useStyles();
   const { id } = useParams();
-  console.log(id);
+  const [image, setImage] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(`https://image-app-backend.herokuapp.com/show/${id}`)
+      .then((res) => {
+        setLoading(false);
+        setImage(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [id]);
 
   return (
     <>
       <NavBar showAddButton={true} />
       <Container maxWidth='md' className={classes.container}>
-        {}
-        <SingleImage
-          img={{
-            id: 3,
-            name: 'Contemplative Reptile',
-            description: `Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica`,
-            url: 'https://i.pravatar.cc/300?img=3',
-          }}
-        />
+        {loading ? <CircularProgress /> : <SingleImage img={image} />}
       </Container>
     </>
   );

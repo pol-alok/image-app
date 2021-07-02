@@ -9,6 +9,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { CloudUploadRounded as CloudUploadRoundedIcon } from '@material-ui/icons';
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -61,16 +63,29 @@ const ImageForm = () => {
       if (value.trim() === '') return 'Image Details is requred.';
     }
   };
+  const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors(validate());
-    if (
-      errors &&
-      Object.keys(errors).length === 0 &&
-      errors.constructor === Object
-    ) {
+    const err = validate();
+    setErrors(err);
+    if (err && Object.keys(err).length === 0 && err.constructor === Object) {
       setLoading(true);
-      setTimeout(() => setLoading(false), 3000);
+      axios.post('https://image-app-backend.herokuapp.com/new', image).then(
+        (response) => {
+          setLoading(false);
+          e.target.reset();
+          history.push({
+            pathname: '/',
+            state: {
+              response: 'Added Successfully.',
+            },
+          });
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     }
   };
 
