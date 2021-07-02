@@ -29,13 +29,13 @@ const Home = () => {
   const classes = useStyles();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
 
   useEffect(() => {
     window.addEventListener(
       'resize',
       () => {
-        const ismobile = window.innerWidth < 1200;
+        const ismobile = window.innerWidth < 420;
         if (ismobile !== isMobile) setIsMobile(ismobile);
       },
       false,
@@ -56,7 +56,9 @@ const Home = () => {
       <NavBar showAddButton={true} />
       <Container
         maxWidth='lg'
-        className={isMobile ? classes.mobileContainer : classes.container}>
+        className={
+          isMobile || loading ? classes.mobileContainer : classes.container
+        }>
         {loading ? (
           <CircularProgress />
         ) : (
