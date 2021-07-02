@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(50),
     },
   },
-  loadingContainer: {
+  mobileContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
@@ -29,8 +29,17 @@ const Home = () => {
   const classes = useStyles();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
 
   useEffect(() => {
+    window.addEventListener(
+      'resize',
+      () => {
+        const ismobile = window.innerWidth < 1200;
+        if (ismobile !== isMobile) setIsMobile(ismobile);
+      },
+      false,
+    );
     axios
       .get('https://image-app-backend.herokuapp.com/')
       .then((res) => {
@@ -40,14 +49,14 @@ const Home = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
       <NavBar showAddButton={true} />
       <Container
         maxWidth='lg'
-        className={loading ? classes.loadingContainer : classes.container}>
+        className={isMobile ? classes.mobileContainer : classes.container}>
         {loading ? (
           <CircularProgress />
         ) : (

@@ -10,7 +10,7 @@ import {
 
 const useStyles = makeStyles({
   card: {
-    minWidth: 800,
+    minWidth: '100%',
   },
   media: {
     height: 400,
